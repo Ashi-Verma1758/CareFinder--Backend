@@ -28,8 +28,10 @@ app.use(express.static("public"))
 app.use(cookieParser())
 
 //routes
+
+//routes declaration
 app.use('/api/user', userRoutes);
-app.use('/api/hospitals', hospitalRoutes);
+app.use('/api', hospitalRoutes);
 app.use('/api/beds', bedRoutes);
 app.use('/api/search', searchRoutes);
 
