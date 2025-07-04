@@ -1,9 +1,12 @@
 {
-  "name": "carefinderbackend",
+  "name": "carefinder--backend",
   "version": "1.0.0",
-  "description": "connect beds and hospital in one app",
+  "description": "backend for carefinder",
+  "keywords": [
+    "js"
+  ],
   "license": "ISC",
-  "author": "AshiVerma",
+  "author": "ashi verma",
   "type": "module",
   "main": "index.js",
   "scripts": {
