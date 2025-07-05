@@ -4,7 +4,7 @@ import  ApiError  from '../utils/ApiError.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import Bed from '../models/bed.model.js'
 
-//Create/Register Hospital
+//reate/Register Hospital
 export const createHospital = asyncHandler(async (req, res) => {
   const { name, address, city, state, pincode, phone, email } = req.body;
 
@@ -36,7 +36,7 @@ export const createHospital = asyncHandler(async (req, res) => {
 });
 
 
-// Get All Hospitals (with optional approval filter)
+//Get All Hospitals (with optional approval filter)
 export const getAllHospitals = asyncHandler(async (req, res) => {
   const { approved } = req.query;
 
@@ -67,7 +67,7 @@ export const updateHospital = asyncHandler(async (req, res) => {
 
   if (!hospital) throw new ApiError(404, "Hospital not found");
 
-  // Optionally, restrict update access
+  //restrict update access
   if (!hospital.registeredBy.equals(req.user._id) && req.user.role !== 'admin') {
     throw new ApiError(403, "Not authorized to update this hospital");
   }
@@ -82,7 +82,7 @@ export const updateHospital = asyncHandler(async (req, res) => {
   res.status(200).json(new ApiResponse(200, hospital, "Hospital updated"));
 });
 
-// Approve Hospital (Admin Only)
+//Approve Hospital (Admin Only)
 export const approveHospital = asyncHandler(async (req, res) => {
   const hospital = await Hospital.findById(req.params.id);
 
@@ -103,7 +103,7 @@ export const deleteHospital = asyncHandler(async (req, res) => {
   await hospital.deleteOne();
   res.status(200).json(new ApiResponse(200, null, "Hospital deleted"));
 });
-//Get Hospital for Logged-in Staff
+//Hospital for Logged-in Staff
 export const getMyHospital = asyncHandler(async (req, res) => {
   const userId = req.user._id;
 

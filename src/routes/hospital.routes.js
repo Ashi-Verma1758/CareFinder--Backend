@@ -10,7 +10,7 @@ import {
   getMyHospital,
   searchHospitals,
   deleteHospital
-} from '../controllers/hospital.controllers.js';
+} from '../controllers/hospital.controller.js';
 
 import { requireAuth } from '../middlewares/auth.middleware.js';
 import { authorizeRoles } from '../middlewares/role.middleware.js';
