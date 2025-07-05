@@ -4,12 +4,12 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import ApiError from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
-//generatimg tokens
+// 🔐 Helper to generate and send tokens
 export const sendTokens = (user, res) => {
   const accessToken = user.generateAccessToken();
   const refreshToken = user.generateRefreshToken();
 
-  // refreshtoken as cookie
+  // Set refresh token as HttpOnly cookie
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
@@ -17,7 +17,7 @@ export const sendTokens = (user, res) => {
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   });
 
-  // sending the respoonse
+  // Send response
   return res.status(200).json(
   new ApiResponse(200, {
     accessToken,
@@ -33,7 +33,7 @@ export const sendTokens = (user, res) => {
 
 };
 
-//Registrationss
+//Register
 export const registerUser = asyncHandler(async (req, res) => {
   const { username, fullName, email, password, role } = req.body;
 
@@ -60,7 +60,7 @@ export const registerUser = asyncHandler(async (req, res) => {
 }
 });
 
-//login
+//Login
 export const loginUser = asyncHandler(async (req, res) => {
   const { emailOrUsername, password } = req.body;
 
@@ -75,7 +75,7 @@ export const loginUser = asyncHandler(async (req, res) => {
   sendTokens(user, res);
 });
 
-//refereshaccesstoken
+//Refresh Access Token
 export const refreshToken = asyncHandler(async (req, res) => {
   const token = req.cookies.refreshToken;
   if (!token) {
@@ -94,7 +94,7 @@ export const refreshToken = asyncHandler(async (req, res) => {
   );
 });
 
-//loginfout
+//Logout
 export const logoutUser = asyncHandler(async (req, res, next) => {
     res.clearCookie("refreshToken", {
       httpOnly: true,

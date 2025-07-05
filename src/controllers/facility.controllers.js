@@ -3,7 +3,7 @@ import { asyncHandler } from '../utils/asyncHandler.js';
 import ApiError  from '../utils/ApiError.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 
-//Add or update facilities
+//Add or update facilities for a hospital
 export const upsertFacility = asyncHandler(async (req, res) => {
   const { hospitalId, ambulanceCount, oxygenCylinders, ventilators } = req.body;
 
@@ -28,7 +28,7 @@ export const upsertFacility = asyncHandler(async (req, res) => {
   res.status(201).json(new ApiResponse(201, facility, "Facility created"));
 });
 
-//facility for a hospital
+//Get facility for a hospital
 export const getFacility = asyncHandler(async (req, res) => {
   const { hospitalId } = req.params;
   const facility = await Facility.findOne({ hospital: hospitalId }).populate("hospital");

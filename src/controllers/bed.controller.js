@@ -5,7 +5,18 @@ import { ApiResponse } from '../utils/ApiResponse.js';
 
 //Add Bed
 export const addBed = asyncHandler(async (req, res) => {
-  const { hospitalId, type, totalBeds, availableBeds } = req.body;
+  let hospitalId = req.body.hospitalId;
+
+ 
+  if (req.user.role === 'hospital-staff') {
+    const hospital = await Hospital.findOne({ registeredBy: req.user._id });
+    if (!hospital) {
+      throw new ApiError(404, "No hospital found for this user");
+    }
+    hospitalId = hospital._id;
+  }
+
+  const { type, totalBeds, availableBeds } = req.body;
 
   const bedExists = await Bed.findOne({ hospital: hospitalId, type });
   if (bedExists) {
@@ -21,6 +32,7 @@ export const addBed = asyncHandler(async (req, res) => {
 
   res.status(201).json(new ApiResponse(201, bed, 'Bed record added'));
 });
+
 
 //Update Bed
 export const updateBed = asyncHandler(async (req, res) => {
@@ -38,7 +50,7 @@ export const updateBed = asyncHandler(async (req, res) => {
   res.status(200).json(new ApiResponse(200, bed, 'Bed record updated'));
 });
 
-//Beds by Hospital
+//Get Beds by Hospital
 export const getBedsByHospital = asyncHandler(async (req, res) => {
   const { hospitalId } = req.params;
   const beds = await Bed.find({ hospital: hospitalId });
