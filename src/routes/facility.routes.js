@@ -1,5 +1,5 @@
 import express from 'express';
-import { upsertFacility, getFacility } from '../controllers/facility.controller.js';
+import { upsertFacility, getFacility } from '../controllers/facility.controllers.js';
 import { requireAuth } from '../middlewares/auth.middleware.js';
 import { authorizeRoles } from '../middlewares/role.middleware.js';
 

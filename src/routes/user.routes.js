@@ -5,7 +5,7 @@ import {
   loginUser,
   refreshToken,
   logoutUser
-} from "../controllers/user.controllers.js";
+} from "../controllers/user.controller.js";
 const router = express.Router();
 
 router.post("/register", registerUser);
