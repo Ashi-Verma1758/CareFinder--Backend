@@ -7,7 +7,7 @@ import { ApiResponse } from '../utils/ApiResponse.js';
 export const addBed = asyncHandler(async (req, res) => {
   let hospitalId = req.body.hospitalId;
 
- 
+  // If role is hospital-staff, override with their hospital
   if (req.user.role === 'hospital-staff') {
     const hospital = await Hospital.findOne({ registeredBy: req.user._id });
     if (!hospital) {
@@ -52,8 +52,7 @@ export const updateBed = asyncHandler(async (req, res) => {
 
 //Get Beds by Hospital
 export const getBedsByHospital = asyncHandler(async (req, res) => {
-  const { hospitalId } = req.params;
-  const beds = await Bed.find({ hospital: hospitalId });
-
-  res.status(200).json(new ApiResponse(200, beds, 'Beds fetched successfully'));
+  const beds = await Bed.find({ hospital: req.params.hospitalId });
+  res.status(200).json({ success: true, beds });
 });
+

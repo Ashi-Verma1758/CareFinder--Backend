@@ -4,7 +4,7 @@ import  ApiError  from '../utils/ApiError.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import Bed from '../models/bed.model.js'
 
-//reate/Register Hospital
+//Create/Register Hospital
 export const createHospital = asyncHandler(async (req, res) => {
   const { name, address, city, state, pincode, phone, email } = req.body;
 
@@ -51,15 +51,18 @@ export const getAllHospitals = asyncHandler(async (req, res) => {
 
 //Get Hospital by ID
 export const getHospitalById = asyncHandler(async (req, res) => {
-  const hospital = await Hospital.findById(req.params.id);
-  console.log("Fetching hospital by ID:", req.params.id); 
+  console.log("Requested hospital ID:", req.params.id); // Add this
 
-  if (!hospital) {
-    throw new ApiError(404, "Hospital not found");
+  const hospitals = await Hospital.findById(req.params.id);
+
+  if (!hospitals) {
+    return res.status(404).json({ success: false, message: 'Hospital not found' });
   }
 
-  res.status(200).json(new ApiResponse(200, hospital, "Hospital found"));
+  res.status(200).json({ success: true, hospitals });
 });
+
+
 
 //Update Hospital
 export const updateHospital = asyncHandler(async (req, res) => {
@@ -67,7 +70,7 @@ export const updateHospital = asyncHandler(async (req, res) => {
 
   if (!hospital) throw new ApiError(404, "Hospital not found");
 
-  //restrict update access
+  // Optionally, restrict update access
   if (!hospital.registeredBy.equals(req.user._id) && req.user.role !== 'admin') {
     throw new ApiError(403, "Not authorized to update this hospital");
   }
@@ -94,7 +97,7 @@ export const approveHospital = asyncHandler(async (req, res) => {
   res.status(200).json(new ApiResponse(200, hospital, "Hospital approved"));
 });
 
-//Delete Hospital (Optional)
+// Delete Hospital (Optional)
 export const deleteHospital = asyncHandler(async (req, res) => {
   const hospital = await Hospital.findById(req.params.id);
 
@@ -103,7 +106,7 @@ export const deleteHospital = asyncHandler(async (req, res) => {
   await hospital.deleteOne();
   res.status(200).json(new ApiResponse(200, null, "Hospital deleted"));
 });
-//Hospital for Logged-in Staff
+//Get Hospital for Logged-in Staff
 export const getMyHospital = asyncHandler(async (req, res) => {
   const userId = req.user._id;
 
@@ -122,26 +125,22 @@ export const getMyHospital = asyncHandler(async (req, res) => {
 });
 
 export const searchHospitals = asyncHandler(async (req, res) => {
-  const { query } = req.query;
-
-  if (!query) {
-    return res.status(400).json({ success: false, message: "Query parameter is missing" });
-  }
-
-  const regex = new RegExp(query, 'i');
+  const query = req.query.query || '';
+  // if (!query) {
+  //   return res.status(400).json({ success: false, message: "Search query is required" });
+  // }
 
   const hospitals = await Hospital.find({
     isApproved: true,
     $or: [
-      { name: regex },
-      { city: regex }
+      { name: { $regex: query, $options: 'i' } },
+      { city: { $regex: query, $options: 'i' } },
     ]
   });
 
-  const hospitalWithBeds = await Promise.all(hospitals.map(async (hospital) => {
-    const beds = await Bed.find({ hospital: hospital._id });
-    return { hospital, beds };
-  }));
-
-  res.status(200).json({ success: true, data: hospitalWithBeds });
+  res.status(200).json({
+    success: true,
+    data: hospitals
+  });
 });
+

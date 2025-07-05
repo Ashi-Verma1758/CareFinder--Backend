@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-
+import Hospital from '../models/Hospital.model.js';
 import {
   createHospital,
   getAllHospitals,
@@ -10,7 +10,7 @@ import {
   getMyHospital,
   searchHospitals,
   deleteHospital
-} from '../controllers/hospital.controller.js';
+} from '../controllers/hospital.controllers.js';
 
 import { requireAuth } from '../middlewares/auth.middleware.js';
 import { authorizeRoles } from '../middlewares/role.middleware.js';
