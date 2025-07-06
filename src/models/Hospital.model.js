@@ -17,7 +17,7 @@ const hospitalSchema = new mongoose.Schema({
   },
   isApproved: {
     type: Boolean,
-    default: false,
+    default: true,
   },
   createdAt: {
     type: Date,

@@ -2,13 +2,14 @@ import Bed from '../models/bed.model.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import ApiError from '../utils/ApiError.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
+import Hospital from '../models/Hospital.model.js';
 
 //Add Bed
 export const addBed = asyncHandler(async (req, res) => {
   let hospitalId = req.body.hospitalId;
 
   // If role is hospital-staff, override with their hospital
-  if (req.user.role === 'hospital-staff') {
+  if (req.user.role === 'hospital-staff' ||req.user.role === 'admin') {
     const hospital = await Hospital.findOne({ registeredBy: req.user._id });
     if (!hospital) {
       throw new ApiError(404, "No hospital found for this user");
@@ -31,6 +32,13 @@ export const addBed = asyncHandler(async (req, res) => {
   });
 
   res.status(201).json(new ApiResponse(201, bed, 'Bed record added'));
+});
+
+// Get Bed by ID
+export const getBedById = asyncHandler(async (req, res) => {
+  const bed = await Bed.findById(req.params.id);
+  if (!bed) throw new ApiError(404, 'Bed not found');
+  res.status(200).json(new ApiResponse(200, bed, 'Bed fetched'));
 });
 
 
