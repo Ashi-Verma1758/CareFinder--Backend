@@ -2,7 +2,7 @@ import Bed from '../models/bed.model.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import ApiError from '../utils/ApiError.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
-
+import Hospital from '../models/Hospital.model.js';
 //Add Bed
 export const addBed = asyncHandler(async (req, res) => {
   let hospitalId = req.body.hospitalId;
