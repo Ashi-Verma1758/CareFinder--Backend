@@ -7,7 +7,7 @@ import { app } from "./app.js"
 dotenv.config({
     path: './env'
 })
-app.get("/api", (req, res) => {
+app.get("/", (req, res) => {
   res.json({ message: "✅ Backend is live!" });
 });
 

@@ -34,7 +34,9 @@ app.use('/api/user', userRoutes);
 app.use('/api', hospitalRoutes);
 app.use('/api/beds', bedRoutes);
 app.use('/api/search', searchRoutes);
-
+app.get("/", (req, res) => {
+  res.send("🚀 CareFinder Backend is live!");
+});
 app.get("/api/test", (req, res) => {
   res.json({ message: "Backend connected!" });
 });
