@@ -16,7 +16,7 @@ app.use(cookieParser());
 
 
 app.use(cors({
-  origin: "http://localhost:5173",  // frontend origin
+  origin: "https://care-finder-frontend.vercel.app/",  // frontend origin
   credentials: true,
 }));
 app.use(express.json());
