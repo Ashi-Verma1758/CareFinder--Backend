@@ -7,6 +7,9 @@ import { app } from "./app.js"
 dotenv.config({
     path: './env'
 })
+app.get("/", (req, res) => {
+  res.send("🚀 CareFinder Backend is live!");
+});
 
 connectDB()
 .then(() => {
