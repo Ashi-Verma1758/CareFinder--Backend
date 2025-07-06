@@ -12,14 +12,14 @@ const app = express();//d
 
 dotenv.config();
 app.use(express.json());
-app.use(cookieParser());
+// app.use(cookieParser());
 
 
 app.use(cors({
   origin: process.env.CORS_ORIGIN,// "https://care-finder-frontend.vercel.app/",  // frontend origin
   credentials: true,
 }));
-app.use(express.json());
+// app.use(express.json());
 
 
 app.use(express.json({limit: "16kb"}))
