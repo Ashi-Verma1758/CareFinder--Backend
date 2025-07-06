@@ -16,7 +16,7 @@ app.use(cookieParser());
 
 
 app.use(cors({
-  origin: "https://care-finder-frontend.vercel.app/",  // frontend origin
+  origin: process.env.CORS_ORIGIN,// "https://care-finder-frontend.vercel.app/",  // frontend origin
   credentials: true,
 }));
 app.use(express.json());
