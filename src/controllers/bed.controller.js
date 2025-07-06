@@ -8,7 +8,7 @@ export const addBed = asyncHandler(async (req, res) => {
   let hospitalId = req.body.hospitalId;
 
   // If role is hospital-staff, override with their hospital
-  if (req.user.role === 'hospital-staff') {
+  if (req.user.role === 'hospital-staff' || 'admin') {
     const hospital = await Hospital.findOne({ registeredBy: req.user._id });
     if (!hospital) {
       throw new ApiError(404, "No hospital found for this user");
